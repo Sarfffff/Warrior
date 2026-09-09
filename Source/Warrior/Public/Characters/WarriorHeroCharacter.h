@@ -42,7 +42,7 @@ private:
 #pragma endregion
 
 	// 输入配置数据资产：存放「标签→输入动作」映射表，在蓝图里配置
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
 
 	// ---- 输入回调函数（由 Enhanced Input 触发）----
