@@ -11,6 +11,7 @@
 #include "InputTriggers.h"                             // ETriggerEvent：输入触发时机
 #include "Components/Input/WarriorInputComponent.h"    // UWarriorInputComponent：自定义输入组件（按标签绑定）
 #include "WarriorGamePlayTags.h"                       // WarriorGameplayTags::InputTag_Move / InputTag_Look
+#include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "WarriorsDebugHelper.h"                       // Debug::Print：屏幕调试输出
 
 // 构造函数：创建组件并设置角色默认属性
@@ -48,9 +49,24 @@ void AWarriorHeroCharacter::BeginPlay()
 {
 	// 先执行父类逻辑
 	Super::BeginPlay();
+}
 
-	// 调试输出：屏幕打印 "Working"，验证函数被正确调用
-	Debug::Print(TEXT("Working"));
+void AWarriorHeroCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// 基类 PossessedBy 里已调用 InitAbilityActorInfo(this, this)，此时 Owner/Avatar 均指向本角色
+	if (WarriorAbilitySystemComponent && WarriorAttributeSet)
+	{
+		// 打印 ASC 的 Owner 与 Avatar，验证 GAS 初始化是否成功
+		const FString ASCText = FString::Printf(
+			TEXT("Owner Actor: %s, Avatar Actor: %s"),
+			*WarriorAbilitySystemComponent->GetOwnerActor()->GetActorLabel(),
+			*WarriorAbilitySystemComponent->GetAvatarActor()->GetActorLabel());
+
+		Debug::Print(TEXT("Ability system component valid: ") + ASCText, FColor::Green);
+		Debug::Print(TEXT("Attribute set valid"), FColor::Green);
+	}
 }
 
 // 输入绑定入口：框架在输入组件准备好后调用，用于接入 Enhanced Input

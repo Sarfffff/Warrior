@@ -29,6 +29,8 @@ protected:
 	// 游戏开始回调：角色进入世界后执行一次
 	virtual void BeginPlay() override;
 
+
+	virtual void PossessedBy(AController* NewController) override;
 private:
 
 #pragma region Components
